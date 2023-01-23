@@ -28,6 +28,10 @@ remove_beginning=""
 # Define the string you want to remove from the end of the filenames
 remove_end=""
 
+# Define a list of video file extensions
+video_extensions=("mp4" "mkv" "avi" "mov" "wmv" "flv" "m4v" "mpg" "mpeg" "vob" "ts")
+
+
 
 # Get the name of the script file
 script_file="$(basename -- "$0")"
@@ -38,6 +42,16 @@ for file in *; do
     if [ "$file" == "$script_file" ]; then
         continue
     fi
+        # Get the file extension
+    file_extension="${file##*.}"
+
+    # Check if the file extension is in the list of video extensions
+    if [[ ! " ${video_extensions[@]} " =~ " ${file_extension} " ]]; then
+        echo "File $file is not a video file, skipping"
+        continue
+    fi
+
+    
     # Get the movie name by removing the file extension
     movie_name="${file%.*}"
     # check if the file name already contains the year
