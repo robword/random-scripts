@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Define the API key
+api_key=<your_api_key>
+
 # Get the name of the script file
 script_file="$(basename -- "$0")"
 
@@ -19,7 +22,7 @@ for file in *; do
     # Replace spaces with %20
     encoded_movie_name="${movie_name// /%20}"
     # Search the movie on IMDb
-    movie_details=$(curl -s "http://www.omdbapi.com/?apikey=<your_api_key>&t=$encoded_movie_name" | sed -n 's/.*"Year":"\([^"]*\)".*/\1/p')
+    movie_details=$(curl -s "http://www.omdbapi.com/?apikey=$api_key&t=$encoded_movie_name" | sed -n 's/.*"Year":"\([^"]*\)".*/\1/p')
     if [ $? -ne 0 ]; then
         echo "Error: Failed to retrieve movie details for $movie_name"
         continue
