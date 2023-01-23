@@ -7,10 +7,11 @@
 # The script loops through all files in the current directory, ignores the script file itself, and for each file, it performs the following steps:
 # 1. Extract the movie name by removing the file extension.
 # 2. Check if the file name already contains the year by using a regular expression, if the pattern is found, the script will print a message that the file already has the year in the name and will continue to the next file.
-# 3. Replace spaces with %20 in the movie name, this is necessary for the API call.
-# 4. Make an API call to the OMDb API to retrieve the movie details based on the movie name, the API key is passed to the API call via a variable.
-# 5. Extract the release year from the movie details using sed command.
-# 6. Rename the file by adding the release year in the format `(yyyy)` to the movie name and the file extension.
+# 3. Remove the contents of the remove_beginning variable from the beginning of the movie name, if the variable exists.
+# 4. Replace spaces with %20 in the movie name, this is necessary for the API call.
+# 5. Make an API call to the OMDb API to retrieve the movie details based on the movie name, the API key is passed to the API call via a variable.
+# 6. Extract the release year from the movie details using sed command.
+# 7. Rename the file by adding the release year in the format `(yyyy)` to the movie name and the file extension.
 # It is important to note that the script requires an API key from OMDb API to work, and that the key should be defined as a variable at the top of the script.
 # Also, the script might fail if the movie name is not found in the OMDb database, in that case, the script will print an error message and continue to the next file.
 #
@@ -20,6 +21,13 @@
 
 # Define the API key
 api_key=<your_api_key>
+
+# Define the string you want to remove from the beginning of the filenames
+remove_beginning=""
+
+# Define the string you want to remove from the end of the filenames
+remove_end=""
+
 
 # Get the name of the script file
 script_file="$(basename -- "$0")"
@@ -37,6 +45,15 @@ for file in *; do
         echo "File $file already has the year in the name, skipping"
         continue
     fi
+# Remove the contents of the remove_beginning variable 
+    if [ "$remove_beginning" != "" ] ; then
+        movie_name="${movie_name#"$remove_beginning"}"
+    fi
+    # Remove the contents of the remove_end variable 
+     if [ "$remove_end" != "" ] ; then
+        movie_name="${movie_name%"$remove_end"}"
+    fi
+    
     # Replace spaces with %20
     encoded_movie_name="${movie_name// /%20}"
     # Search the movie on IMDb
