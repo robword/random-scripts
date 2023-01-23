@@ -1,22 +1,23 @@
 #!/bin/bash
 
-#
-#
 # This script is designed to rename the files in the current directory by adding the release year of the movie to the file name.
 # It does this by making an API call to the Open Movie Database (OMDb) API to retrieve movie details based on the file name (without the file extension).
 # The script loops through all files in the current directory, ignores the script file itself, and for each file, it performs the following steps:
+#
 # 1. Extract the movie name by removing the file extension.
 # 2. Check if the file name already contains the year by using a regular expression, if the pattern is found, the script will print a message that the file already has the year in the name and will continue to the next file.
-# 3. Remove the contents of the remove_beginning variable from the beginning of the movie name, if the variable exists.
+# 3a. Remove the contents of the remove_beginning variable from the beginning of the movie name, if the variable exists.
+# 3b. Remove the contents of the remove_end variable from the end of the movie name, if the variable exists.
 # 4. Replace spaces with %20 in the movie name, this is necessary for the API call.
 # 5. Make an API call to the OMDb API to retrieve the movie details based on the movie name, the API key is passed to the API call via a variable.
 # 6. Extract the release year from the movie details using sed command.
 # 7. Rename the file by adding the release year in the format `(yyyy)` to the movie name and the file extension.
+#
 # It is important to note that the script requires an API key from OMDb API to work, and that the key should be defined as a variable at the top of the script.
 # Also, the script might fail if the movie name is not found in the OMDb database, in that case, the script will print an error message and continue to the next file.
-#
-#
-#
+
+
+
 
 
 # Define the API key
